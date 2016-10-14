@@ -35,3 +35,12 @@ SELECT
   FROM posts
   INNER JOIN users ON posts.user_id = users.id
   WHERE first_name = 'Norene' AND last_name = 'Schmitt';
+
+--5
+SELECT DISTINCT
+  username,
+  posts.created_at
+  FROM users
+  INNER JOIN posts ON posts.user_id = users.id
+  WHERE posts.created_at > '2015-01-01';
+
