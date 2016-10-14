@@ -6,10 +6,12 @@ DROP DATABASE IF EXISTS has_many_blogs;
 
 CREATE DATABASE has_many_blogs OWNER has_many_user;
 
+\c has_many_blogs;
+
 DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users (
-  id serial NOT NULL PRIMARY KEY, -- PK
+  id serial PRIMARY KEY, -- PK
   username varchar(90) NOT NULL,
   first_name varchar(90) DEFAULT NULL,
   last_name varchar(90) DEFAULT NULL,
@@ -17,10 +19,11 @@ CREATE TABLE users (
   updated_at timestamp NOT NULL DEFAULT now()
 );
 
+
 DROP TABLE IF EXISTS posts CASCADE;
 
 CREATE TABLE posts (
-  id serial NOT NULL PRIMARY KEY, -- PK
+  id serial PRIMARY KEY, -- PK
   title varchar(180) DEFAULT NULL,
   url varchar(510) DEFAULT NULL,
   content text DEFAULT NULL,
@@ -33,7 +36,7 @@ CREATE TABLE posts (
 DROP TABLE IF EXISTS comments CASCADE;
 
 CREATE TABLE comments (
-  id serial NOT NULL PRIMARY KEY, -- PK
+  id serial PRIMARY KEY, -- PK
   body varchar(510) DEFAULT NULL,
   created_at timestamp NOT NULL DEFAULT now(),
   updated_at timestamp NOT NULL DEFAULT now(),
@@ -42,3 +45,4 @@ CREATE TABLE comments (
 );
 
 
+\i scripts/blog_data.sql;
