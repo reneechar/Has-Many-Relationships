@@ -263,4 +263,8 @@
 --       WHERE comment_author_id = post_author_id;
 
 --2
+SELECT COUNT(*)
+  FROM posts
+  INNER JOIN comments ON posts.id = comments.post_id
+  WHERE posts.created_at > '2015-7-14';
 
