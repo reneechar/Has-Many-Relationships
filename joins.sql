@@ -154,71 +154,113 @@
 --     INNER JOIN posts ON comments.post_id = posts.id
 --     WHERE comments.body LIKE '%SSL%' AND posts.content LIKE '%dolorum%') AS temp2;
 
---13
--- SELECT
---   users.username AS comment_author_username,
---   comments.body AS comment_body
---   FROM comments --post_and_comment
---   INNER JOIN users ON comments.user_id = users.id
---   WHERE comments.body LIKE '%SSL%' OR comments.body LIKE '%firewall%';
+-- --13 broken down
+-- --SELECT
+-- --  users.username AS comment_author_username,
+-- --  comments.body AS comment_body
+-- --  FROM comments --post_and_comment
+-- --  INNER JOIN users ON comments.user_id = users.id
+-- --  WHERE comments.body LIKE '%SSL%' OR comments.body LIKE '%firewall%';
 
 -- SELECT
---   users.last_name AS post_author_last_name,
---   users.first_name AS post_author_first_name,
---   posts.title AS post_title
+-- -- users.last_name AS post_author_last_name,
+-- --  users.first_name AS post_author_first_name,
+-- --  posts.title AS post_title
+-- --  FROM users
+-- --  INNER JOIN posts ON posts.user_id = users.id
+-- --  WHERE posts.content LIKE '%nemo%';
+
+-- --join these two tables on posts.id = comments.post_id
+
+-- --actual query that returns desired table
+-- SELECT
+--   post_author_first_name,
+--   post_author_last_name,
+--   post_title,
+--   comment_author_username,
+--   comment_body
+--   FROM
+--     (SELECT
+--       users.username AS comment_author_username,
+--       comments.body AS comment_body,
+--       comments.post_id AS comment_post_id
+--       FROM comments --post_and_comment
+--       INNER JOIN users ON comments.user_id = users.id
+--       WHERE comments.body LIKE '%SSL%' OR comments.body LIKE '%firewall%') AS t1
+--   INNER JOIN (
+--     SELECT
+--       users.last_name AS post_author_last_name,
+--       users.first_name AS post_author_first_name,
+--       posts.title AS post_title,
+--       posts.id AS post_id
+--       FROM users
+--       INNER JOIN posts ON posts.user_id = users.id
+--       WHERE posts.content LIKE '%nemo%') AS t2 ON t2.post_id = t1.comment_post_id;
+
+-- --13 COUNT
+-- SELECT COUNT(*)
+--   FROM
+--   (SELECT
+--     post_author_first_name,
+--     post_author_last_name,
+--     post_title,
+--     comment_author_username,
+--     comment_body
+--     FROM
+--       (SELECT
+--         users.username AS comment_author_username,
+--         comments.body AS comment_body,
+--         comments.post_id AS comment_post_id
+--         FROM comments --post_and_comment
+--         INNER JOIN users ON comments.user_id = users.id
+--         WHERE comments.body LIKE '%SSL%' OR comments.body LIKE '%firewall%') AS t1
+--     INNER JOIN (
+--       SELECT
+--         users.last_name AS post_author_last_name,
+--         users.first_name AS post_author_first_name,
+--         posts.title AS post_title,
+--         posts.id AS post_id
+--         FROM users
+--         INNER JOIN posts ON posts.user_id = users.id
+--         WHERE posts.content LIKE '%nemo%') AS t2 ON t2.post_id = t1.comment_post_id) AS temp200;
+
+
+-- Additional Queries
+
+-- --1 BROKEN DOWN
+-- SELECT
+--   users.id AS comment_author_id,
+--   comments.post_id AS comment_on_post_id
 --   FROM users
---   INNER JOIN posts ON posts.user_id = users.id
---   WHERE posts.content LIKE '%nemo%';
+--   INNER JOIN comments ON comments.user_id = users.id;
 
---join these two tables on posts.id = comments.post_id
+-- SELECT
+--   posts.title AS post_title,
+--   posts.id AS post_id,
+--   users.id AS post_author_id
+--   FROM users
+--   INNER JOIN posts ON posts.user_id = users.id;
 
-SELECT
-  post_author_first_name,
-  post_author_last_name,
-  post_title,
-  comment_author_username,
-  comment_body
-  FROM
-    (SELECT
-      users.username AS comment_author_username,
-      comments.body AS comment_body,
-      comments.post_id AS comment_post_id
-      FROM comments --post_and_comment
-      INNER JOIN users ON comments.user_id = users.id
-      WHERE comments.body LIKE '%SSL%' OR comments.body LIKE '%firewall%') AS t1
-  INNER JOIN (
-    SELECT
-      users.last_name AS post_author_last_name,
-      users.first_name AS post_author_first_name,
-      posts.title AS post_title,
-      posts.id AS post_id
-      FROM users
-      INNER JOIN posts ON posts.user_id = users.id
-      WHERE posts.content LIKE '%nemo%') AS t2 ON t2.post_id = t1.comment_post_id;
+-- --JOIN THESE TWO TABLES WHERE post_author_id = comment_author_id
 
---13 COUNT
-SELECT COUNT(*)
-  FROM
-  (SELECT
-    post_author_first_name,
-    post_author_last_name,
-    post_title,
-    comment_author_username,
-    comment_body
-    FROM
-      (SELECT
-        users.username AS comment_author_username,
-        comments.body AS comment_body,
-        comments.post_id AS comment_post_id
-        FROM comments --post_and_comment
-        INNER JOIN users ON comments.user_id = users.id
-        WHERE comments.body LIKE '%SSL%' OR comments.body LIKE '%firewall%') AS t1
-    INNER JOIN (
-      SELECT
-        users.last_name AS post_author_last_name,
-        users.first_name AS post_author_first_name,
-        posts.title AS post_title,
-        posts.id AS post_id
-        FROM users
-        INNER JOIN posts ON posts.user_id = users.id
-        WHERE posts.content LIKE '%nemo%') AS t2 ON t2.post_id = t1.comment_post_id) AS temp200;
+-- SELECT
+--   post_id,
+--   post_title,
+--   post_author_id
+--   FROM
+--     (SELECT
+--       users.id AS comment_author_id,
+--       comments.post_id AS comment_on_post_id
+--       FROM users
+--       INNER JOIN comments ON comments.user_id = users.id) AS t1
+--   INNER JOIN (
+--     SELECT
+--       posts.title AS post_title,
+--       posts.id AS post_id,
+--       users.id AS post_author_id
+--       FROM users
+--       INNER JOIN posts ON posts.user_id = users.id) AS t2 ON t1.comment_on_post_id = t2.post_id
+--       WHERE comment_author_id = post_author_id;
+
+--2
+
