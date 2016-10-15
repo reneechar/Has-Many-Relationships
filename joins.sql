@@ -52,9 +52,9 @@
 --   INNER JOIN users ON posts.user_id = users.id
 --   WHERE users.created_at < '2015-01-01';
 
---7 --needs editing, unable to give a string as an alias
+-- --7
 -- SELECT
---   posts.title AS Post_Title,
+--   posts.title AS "Post Title",
 --   comments.id,
 --   comments.body,
 --   comments.created_at,
@@ -262,9 +262,14 @@
 --       INNER JOIN posts ON posts.user_id = users.id) AS t2 ON t1.comment_on_post_id = t2.post_id
 --       WHERE comment_author_id = post_author_id;
 
---2
-SELECT COUNT(*)
-  FROM posts
-  INNER JOIN comments ON posts.id = comments.post_id
-  WHERE posts.created_at > '2015-7-14';
+-- --2
+-- SELECT COUNT(*)
+--   FROM posts
+--   INNER JOIN comments ON posts.id = comments.post_id
+--   WHERE posts.created_at > '2015-7-14';
 
+-- --3
+-- SELECT COUNT(*)
+--   FROM users
+--   INNER JOIN comments ON comments.user_id = users.id
+--   WHERE comments.body LIKE '%programming%';
